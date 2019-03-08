@@ -29,7 +29,7 @@ In maven ```settings.xml```
 
 ## Usage
 
-Add dependency to maven
+#### Add dependency to maven
 
 ```xml
 <dependency>
@@ -39,7 +39,9 @@ Add dependency to maven
 </dependency>
 ```
 
-and add bot credentials to ```application.properties```
+#### Update application.properties
+
+Add bot credentials to ```application.properties```
 
 ```properties
 wemala.server.url=http://dev.to.chat
@@ -47,6 +49,16 @@ wemala.bot.identifier=my-bot@to.chat
 wemala.bot.username=my-first-bot
 wemala.bot.password=my-secure-bot-password
 ```
+
+#### Add Spring Boot component scan
+
+```kotlin
+@ComponentScan("chat.to")
+@SpringBootApplication
+class MyWeMaLaBotAdapterApplication
+```
+
+#### Receive and send messages
 
 By using ```ServerMessageExchangeService.kt``` you can receive and send messages:
 
