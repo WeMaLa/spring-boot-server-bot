@@ -8,6 +8,25 @@ This library is written in Kotlin.
 * Kotlin 1.3.21
 * Spring Boot 2.1.x
 
+### Access to the nexus
+
+In maven ```settings.xml```
+
+```xml
+<servers>
+    <server>
+        <id>wemala</id>
+        <username>my-user</username>
+        <password>my-password</password>
+    </server>
+    <server>
+        <id>wemala-snapshots</id>
+        <username>my-user</username>
+        <password>my-password</password>
+    </server>
+</servers>
+```
+
 ## Usage
 
 Add dependency to maven
