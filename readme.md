@@ -35,7 +35,7 @@ In maven ```settings.xml```
 <dependency>
   <groupId>chat.to</groupId>
   <artifactId>spring-boot-server-bot</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
 </dependency>
 ```
 
