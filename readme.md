@@ -8,9 +8,28 @@ This library is written in Kotlin.
 * Kotlin 1.3.21
 * Spring Boot 2.1.x
 
+#### Access to the nexus
+
+In maven ```settings.xml```
+
+```xml
+<servers>
+    <server>
+        <id>wemala</id>
+        <username>my-user</username>
+        <password>my-password</password>
+    </server>
+    <server>
+        <id>wemala-snapshots</id>
+        <username>my-user</username>
+        <password>my-password</password>
+    </server>
+</servers>
+```
+
 ## Usage
 
-Add dependency to maven
+#### Add dependency to maven
 
 ```xml
 <dependency>
@@ -20,7 +39,9 @@ Add dependency to maven
 </dependency>
 ```
 
-and add bot credentials to ```application.properties```
+#### Update application.properties
+
+Add bot credentials to ```application.properties```
 
 ```properties
 wemala.server.url=http://dev.to.chat
@@ -28,6 +49,16 @@ wemala.bot.identifier=my-bot@to.chat
 wemala.bot.username=my-first-bot
 wemala.bot.password=my-secure-bot-password
 ```
+
+#### Add Spring Boot component scan
+
+```kotlin
+@ComponentScan("chat.to")
+@SpringBootApplication
+class MyWeMaLaBotAdapterApplication
+```
+
+#### Receive and send messages
 
 By using ```ServerMessageExchangeService.kt``` you can receive and send messages:
 
