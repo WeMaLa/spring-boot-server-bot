@@ -80,11 +80,18 @@ class ServerMessageExchangeServiceTest {
                     .andExpect(header("Authorization", "unit-test-auth-token"))
                     .andRespond(response)
 
-            assertThat(serverMessageExchangeService.retrieveMessages())
-                    .extracting("identifier", "text")
+            val messages = serverMessageExchangeService.retrieveMessages()
+            assertThat(messages)
+                    .extracting(
+                            ServerMessageExchangeService.Message::identifier.name,
+                            ServerMessageExchangeService.Message::text.name)
                     .containsExactly(
-                            tuple( "AWA6_vR3A1S3ubG7cRd1", "message2"),
-                            tuple( "AWA6_o33A1S3ubG7cRdz", "message1"))
+                            tuple("AWA6_vR3A1S3ubG7cRd1", "message2"),
+                            tuple("AWA6_o33A1S3ubG7cRdz", "message1"))
+            assertThat(messages.findByIdentifier("AWA6_vR3A1S3ubG7cRd1")._links.channel.href).isEqualTo("/api/channel/AWA6_ozSA1S3ubG7cRdx")
+            assertThat(messages.findByIdentifier("AWA6_vR3A1S3ubG7cRd1")._links.sender.href).isEqualTo("/api/contact/admin@iconect.io")
+            assertThat(messages.findByIdentifier("AWA6_o33A1S3ubG7cRdz")._links.channel.href).isEqualTo("/api/channel/AWA6_ozSA1S3ubG7cRdx")
+            assertThat(messages.findByIdentifier("AWA6_o33A1S3ubG7cRdz")._links.sender.href).isEqualTo("/api/contact/admin@iconect.io")
             assertThat(lastBotStatusForTesting.lastBotStatus).isEqualTo(BotStatus.OK)
 
             server.verify()
@@ -128,8 +135,8 @@ class ServerMessageExchangeServiceTest {
             assertThat(serverMessageExchangeService.retrieveMessages())
                     .extracting("identifier", "text")
                     .containsExactly(
-                            tuple( "AWA6_vR3A1S3ubG7cRd1", "message2"),
-                            tuple( "AWA6_o33A1S3ubG7cRdz", "message1"))
+                            tuple("AWA6_vR3A1S3ubG7cRd1", "message2"),
+                            tuple("AWA6_o33A1S3ubG7cRdz", "message1"))
             assertThat(lastBotStatusForTesting.lastBotStatus).isEqualTo(BotStatus.MARK_MESSAGES_FAILED)
 
             server.verify()
@@ -214,6 +221,8 @@ class ServerMessageExchangeServiceTest {
             server.verify() // no server call
         }
     }
+
+    private fun List<ServerMessageExchangeService.Message>.findByIdentifier(identifier: String) = this.first { it.identifier == identifier }
 
     private fun createResponse(): String {
         return "{\n" +

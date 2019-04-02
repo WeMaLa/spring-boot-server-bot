@@ -104,9 +104,10 @@ class ServerMessageExchangeService(private var botConfiguration: WeMaLaConfigura
         var _links: Links = Links()
 
         class Links {
-            var channel: Channel = Channel()
+            var channel: Link = Link()
+            var sender: Link = Link()
 
-            class Channel {
+            class Link {
                 var href: String = ""
             }
         }
