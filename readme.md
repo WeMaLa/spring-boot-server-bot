@@ -5,7 +5,7 @@ This library is written in Kotlin.
 
 ## Requirements
 
-* Kotlin 1.3.21
+* Kotlin 1.3.30
 * Spring Boot 2.1.x
 
 #### Access to the nexus
