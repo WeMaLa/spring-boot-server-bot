@@ -124,8 +124,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <!-- TODO JDK 10 is not supported by build server. -->
-                    <jvmTarget>10</jvmTarget>
+                    <jvmTarget>11</jvmTarget>
                     <args>
                         <arg>-Xjsr305=strict</arg>
                     </args>
