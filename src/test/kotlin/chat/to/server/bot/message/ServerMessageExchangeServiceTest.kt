@@ -84,10 +84,11 @@ class ServerMessageExchangeServiceTest {
             assertThat(messages)
                     .extracting(
                             ServerMessageExchangeService.Message::identifier.name,
-                            ServerMessageExchangeService.Message::text.name)
+                            ServerMessageExchangeService.Message::text.name,
+                            ServerMessageExchangeService.Message::createDate.name)
                     .containsExactly(
-                            tuple("AWA6_vR3A1S3ubG7cRd1", "message2"),
-                            tuple("AWA6_o33A1S3ubG7cRdz", "message1"))
+                            tuple("AWA6_vR3A1S3ubG7cRd1", "message2", "2017-12-09 11:17:55"),
+                            tuple("AWA6_o33A1S3ubG7cRdz", "message1", "2017-12-09 11:17:29"))
             assertThat(messages.findByIdentifier("AWA6_vR3A1S3ubG7cRd1")._links.channel.href).isEqualTo("/api/channel/AWA6_ozSA1S3ubG7cRdx")
             assertThat(messages.findByIdentifier("AWA6_vR3A1S3ubG7cRd1")._links.sender.href).isEqualTo("/api/contact/admin@iconect.io")
             assertThat(messages.findByIdentifier("AWA6_o33A1S3ubG7cRdz")._links.channel.href).isEqualTo("/api/channel/AWA6_ozSA1S3ubG7cRdx")

@@ -101,8 +101,8 @@ class ServerMessageExchangeService(private var botConfiguration: WeMaLaConfigura
     class Message {
         var identifier: String = ""
         var text: String = ""
-        var _links: Links = Links()
         var createDate: String = ""
+        var _links: Links = Links()
 
         class Links {
             var channel: Link = Link()
