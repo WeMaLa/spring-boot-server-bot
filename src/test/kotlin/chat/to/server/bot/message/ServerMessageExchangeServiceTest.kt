@@ -264,11 +264,11 @@ class ServerMessageExchangeServiceTest {
                 "    }\n" +
                 "  ],\n" +
                 "  \"last\": true,\n" +
-                "  \"totalElements\": 3,\n" +
+                "  \"totalElements\": 2,\n" +
                 "  \"totalPages\": 1,\n" +
                 "  \"first\": true,\n" +
                 "  \"sort\": null,\n" +
-                "  \"numberOfElements\": 3,\n" +
+                "  \"numberOfElements\": 2,\n" +
                 "  \"size\": 0,\n" +
                 "  \"number\": 0\n" +
                 "}"
