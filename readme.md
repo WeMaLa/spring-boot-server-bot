@@ -5,8 +5,10 @@ This library is written in Kotlin.
 
 ## Requirements
 
+* JDK 11
+* Maven 
 * Kotlin 1.3.30 (comes as maven dependency)
-* Spring Boot 2.1.x
+* Spring Boot 2.2.x (comes as maven dependency)
 
 #### Access to the nexus
 
