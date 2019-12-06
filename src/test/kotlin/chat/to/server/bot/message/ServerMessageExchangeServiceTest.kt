@@ -1,7 +1,8 @@
 package chat.to.server.bot.message
 
 import chat.to.server.bot.message.event.BotStatus
-import com.nhaarman.mockitokotlin2.whenever
+import com.ninjasquad.springmockk.MockkBean
+import io.mockk.every
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.tuple
 import org.hamcrest.core.Is.`is`
@@ -12,7 +13,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
@@ -37,7 +37,7 @@ class ServerMessageExchangeServiceTest {
     @Autowired
     private lateinit var lastBotStatusForTesting: LastBotStatusForTesting
 
-    @MockBean
+    @MockkBean
     lateinit var serverAuthenticationExchangeService: ServerAuthenticationExchangeService
 
     @Autowired
@@ -57,7 +57,7 @@ class ServerMessageExchangeServiceTest {
 
         @Test
         fun `all is fine`() {
-            whenever(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
+            every {serverAuthenticationExchangeService.authenticate() } returns "unit-test-auth-token"
 
             val httpHeaders = HttpHeaders()
             httpHeaders.set("content-type", "application/json;charset=UTF-8 ")
@@ -68,15 +68,15 @@ class ServerMessageExchangeServiceTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .headers(httpHeaders)
             server.expect(requestTo("http://server.unit.test/api/messages?status=SEND&status=RECEIVED"))
-                    .andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
+                    .andExpect(method(HttpMethod.GET))
                     .andExpect(header("Authorization", "unit-test-auth-token"))
                     .andRespond(response)
             server.expect(requestTo("http://server.unit.test/api/message/AWA6_vR3A1S3ubG7cRd1/read"))
-                    .andExpect(MockRestRequestMatchers.method(HttpMethod.PATCH))
+                    .andExpect(method(HttpMethod.PATCH))
                     .andExpect(header("Authorization", "unit-test-auth-token"))
                     .andRespond(response)
             server.expect(requestTo("http://server.unit.test/api/message/AWA6_o33A1S3ubG7cRdz/read"))
-                    .andExpect(MockRestRequestMatchers.method(HttpMethod.PATCH))
+                    .andExpect(method(HttpMethod.PATCH))
                     .andExpect(header("Authorization", "unit-test-auth-token"))
                     .andRespond(response)
 
@@ -100,10 +100,10 @@ class ServerMessageExchangeServiceTest {
 
         @Test
         fun `server responds bad request`() {
-            whenever(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
+            every {serverAuthenticationExchangeService.authenticate() } returns "unit-test-auth-token"
 
             server.expect(requestTo("http://server.unit.test/api/messages?status=SEND&status=RECEIVED"))
-                    .andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
+                    .andExpect(method(HttpMethod.GET))
                     .andExpect(header("Authorization", "unit-test-auth-token"))
                     .andRespond(withBadRequest())
 
@@ -115,21 +115,21 @@ class ServerMessageExchangeServiceTest {
 
         @Test
         fun `mark messages responds bad request`() {
-            whenever(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
+            every {serverAuthenticationExchangeService.authenticate() } returns "unit-test-auth-token"
 
             val response = withStatus(HttpStatus.OK).body("")
                     .body(createResponse())
                     .contentType(MediaType.APPLICATION_JSON)
             server.expect(requestTo("http://server.unit.test/api/messages?status=SEND&status=RECEIVED"))
-                    .andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
+                    .andExpect(method(HttpMethod.GET))
                     .andExpect(header("Authorization", "unit-test-auth-token"))
                     .andRespond(response)
             server.expect(requestTo("http://server.unit.test/api/message/AWA6_vR3A1S3ubG7cRd1/read"))
-                    .andExpect(MockRestRequestMatchers.method(HttpMethod.PATCH))
+                    .andExpect(method(HttpMethod.PATCH))
                     .andExpect(header("Authorization", "unit-test-auth-token"))
                     .andRespond(response)
             server.expect(requestTo("http://server.unit.test/api/message/AWA6_o33A1S3ubG7cRdz/read"))
-                    .andExpect(MockRestRequestMatchers.method(HttpMethod.PATCH))
+                    .andExpect(method(HttpMethod.PATCH))
                     .andExpect(header("Authorization", "unit-test-auth-token"))
                     .andRespond(withBadRequest())
 
@@ -145,14 +145,14 @@ class ServerMessageExchangeServiceTest {
 
         @Test
         fun `authentication fails`() {
-            whenever(serverAuthenticationExchangeService.authenticate()).thenReturn(null)
+            every {serverAuthenticationExchangeService.authenticate() } returns null
 
             assertThat(serverMessageExchangeService.retrieveMessages()).isEmpty()
         }
 
         @Test
         fun `messages are empty`() {
-            whenever(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
+            every {serverAuthenticationExchangeService.authenticate() } returns "unit-test-auth-token"
 
             val httpHeaders = HttpHeaders()
             httpHeaders.set("content-type", "application/json;charset=UTF-8 ")
@@ -163,7 +163,7 @@ class ServerMessageExchangeServiceTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .headers(httpHeaders)
             server.expect(requestTo("http://server.unit.test/api/messages?status=SEND&status=RECEIVED"))
-                    .andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
+                    .andExpect(method(HttpMethod.GET))
                     .andExpect(header("Authorization", "unit-test-auth-token"))
                     .andRespond(response)
 
@@ -178,13 +178,13 @@ class ServerMessageExchangeServiceTest {
 
         @Test
         fun `all is fine`() {
-            whenever(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
+            every {serverAuthenticationExchangeService.authenticate() } returns "unit-test-auth-token"
 
             val messageContent = "unit-test-message-text"
             val channelIdentifier = "unit-test-channel-identifier"
 
             server.expect(requestTo("http://server.unit.test/api/message"))
-                    .andExpect(MockRestRequestMatchers.method(HttpMethod.POST))
+                    .andExpect(method(HttpMethod.POST))
                     .andExpect(header("Authorization", "unit-test-auth-token"))
                     .andExpect(jsonPath("text", `is`(messageContent)))
                     .andExpect(jsonPath("channelIdentifier", `is`(channelIdentifier)))
@@ -197,7 +197,7 @@ class ServerMessageExchangeServiceTest {
 
         @Test
         fun `authentication fails`() {
-            whenever(serverAuthenticationExchangeService.authenticate()).thenReturn(null)
+            every {serverAuthenticationExchangeService.authenticate() } returns null
 
             serverMessageExchangeService.sendMessage("unit-test-channel-identifier", "unit-test-message-text")
 
@@ -206,7 +206,7 @@ class ServerMessageExchangeServiceTest {
 
         @Test
         fun `channel identifier is empty`() {
-            whenever(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
+            every {serverAuthenticationExchangeService.authenticate() } returns "unit-test-auth-token"
 
             serverMessageExchangeService.sendMessage("", "unit-test-message-text")
 
@@ -215,7 +215,7 @@ class ServerMessageExchangeServiceTest {
 
         @Test
         fun `message content is empty`() {
-            whenever(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
+            every {serverAuthenticationExchangeService.authenticate() } returns "unit-test-auth-token"
 
             serverMessageExchangeService.sendMessage("unit-test-channel-identifier", "")
 
